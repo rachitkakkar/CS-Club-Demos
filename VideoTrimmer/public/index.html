@@ -5,66 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Trimming Tool</title>
 
+    <!-- FFmpeg Library -->
     <script src="/assets/ffmpeg/package/dist/umd/ffmpeg.js"></script>
     <script src="/assets/util/package/dist/umd/index.js"></script>
+
+    <!-- Our CSS and Javascript -->
+    <script src="app.js" defer></script>
+    <link href="style.css" rel="stylesheet" />
 </head>
+
 <body>
-    <h1>Video Trimming Tool</h1>
-    <h3>Upload a .mp4 video and trim its first 1 seconds</h3>
-    <input type="file" id="uploader">
-    <p id="message"></p>
-
-    <script>
-      const { fetchFile } = FFmpegUtil;
-      const { FFmpeg } = FFmpegWASM;
-      let ffmpeg = null;
-
-      const trim = async ({ target: { files } }) => {
-        const message = document.getElementById('message');
-        if (ffmpeg === null) {
-            ffmpeg = new FFmpeg();
-            ffmpeg.on("log", ({ message }) => {
-            console.log(message);
-            })
-            ffmpeg.on("progress", ({ progress }) => {
-            message.innerHTML = `${progress * 100} %`;
-            });
-            await ffmpeg.load({
-            coreURL: "/assets/core/package/dist/umd/ffmpeg-core.js",
-            });
-        }
-        const { name } = files[0];
-        await ffmpeg.writeFile(name, await fetchFile(files[0]));
-        message.innerHTML = 'Start trimming';
-        await ffmpeg.exec(['-i', name, '-ss', '0', '-to', '1', 'output.mp4']);
-        message.innerHTML = 'Complete trimming';
-        const data = await ffmpeg.readFile('output.mp4');
-
-        var a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-
-        a.href = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
-        a.download = 'trimed-video.mp4';
-        a.click();
-    }
-
-    const elm = document.getElementById('uploader');
-    elm.addEventListener('change', trim);
-    </script>
+    <div id="content">
+        <h1>Video Trimming Tool</h1>
+        <p>Upload a .mp4 video and trim it</p>
+        <span>Please enter time in seconds</span>
+        <br><br>
+        <form>
+            <labeL>Start:</label><br>
+            <input type="text"><br>
+            <labeL>End:</label><br>
+            <input type="text"><br>
+            <input type="file" id="uploader"><br>
+            <input type="submit" value="Trim">
+        </form>
+        <span id="message"></span>
+    </div>
 </body>
 
 <style>
-    html {
-        line-height:1.5;
-        -webkit-text-size-adjust:100%;
-        -moz-tab-size:4;
-        -o-tab-size:4;
-        tab-size:4;
-        font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-        font-feature-settings:normal;
-        font-variation-settings:normal;
-    }
+
 </style>
 
 </html>
