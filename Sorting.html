@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Demo</title>
+
+    <style>
+        body {
+            background-color: #484a4a;
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1200" height="600">
+    Your browser doesn't support canvas.
+    </canvas>
+
+    <script>
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        
+        // Option 1, Random Array
+        // var randomValues = Array.from({length: canvas.width / 2}, () => Math.floor(Math.random() * canvas.height));
+        // Option 2, Incremented Array that is shuffimage.pngled (creates smooth line)
+        var randomValues = [];
+        for (let i = 0; i < canvas.height; i++)
+            randomValues.push(i);
+        randomValues = shuffle(randomValues); // Would have to implement this shuffle function yourself
+
+        var globalIndex = 0; // Current index
+        function main() {
+            // Clear the screen with a grey color each frame
+            ctx.fillStyle = "#484a4a"
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw each of the values in our array as a line with that height
+            for (let i = 0; i < randomValues.length; i++) {
+                ctx.fillStyle = "white";
+                ctx.fillRect(i * 2, canvas.height - randomValues[i], 2, canvas.height);
+            }
+
+            // If there are still elements left to sort in the array
+            // Main part of selection sort
+            if (globalIndex < randomValues.length) {
+                let minIndex = globalIndex;
+
+                // Draw our current index as a red line
+                ctx.fillStyle = "#f92f5b";
+                ctx.fillRect(globalIndex * 2, canvas.height - randomValues[globalIndex], 2, canvas.height);
+
+                // Find the minimum value in the rest of the array and note its index in minIndex
+                for (let j = globalIndex + 1; j < randomValues.length; j++) {
+                    if (randomValues[j] < randomValues[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+
+                // Swap our current value with said minimum value
+                let temp = randomValues[globalIndex];
+                randomValues[globalIndex] = randomValues[minIndex];
+                randomValues[minIndex] = temp;
+            }
+
+            // Move on to the next element
+            globalIndex++;
+        }
+
+        // Run this function at 35 frames per second
+        setInterval(main, 1000/35);
+    </script>
+</body>
+</html>

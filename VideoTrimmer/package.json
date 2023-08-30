@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "download": "node download.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "serve-index": "^1.9.1",
+    "tar": "^6.1.15"
+  }
+}
