@@ -1,5 +1,5 @@
 # Video Trimmer
-Uses FFmpeg WASM and NodeJS (with ExpressJS) to trim videos.
+Uses ffmpeg.wasm and NodeJS (with ExpressJS) to trim videos.
 
 # Setup
 1. `npm install`
