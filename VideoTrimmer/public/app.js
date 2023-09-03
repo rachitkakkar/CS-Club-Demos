@@ -16,10 +16,14 @@ const trim = async ({ target: { files } }) => {
   const { name } = files[0];
   await ffmpeg.writeFile(name, await fetchFile(files[0]));
 
+  // Get the start and end times of our form
+  var start = document.getElementById('start').value;
+  var end = document.getElementById('end').value;
+
   // Start trimming and write out our message
   const message = document.getElementById('message');
   message.innerHTML = 'Start trimming';
-  await ffmpeg.exec(['-i', name, '-ss', '0', '-to', '1', 'output.mp4']);
+  await ffmpeg.exec(['-i', name, '-ss', start, '-to', end, 'output.mp4']);
   message.innerHTML = 'Complete trimming';
   
   // Download file
