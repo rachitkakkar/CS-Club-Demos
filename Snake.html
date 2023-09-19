@@ -93,20 +93,28 @@ function main() {
 function keyPush(event) {
     switch (event.key) {
         case "ArrowLeft":
-            xVelocity = -1;
-            yVelocity = 0;
+            if (xVelocity != 1) {
+                xVelocity = -1;
+                yVelocity = 0;
+            }
             break;
         case "ArrowUp":
-            xVelocity = 0;
-            yVelocity = -1;
+            if (yVelocity != 1) {
+                xVelocity = 0;
+                yVelocity = -1;
+            }
             break;
         case "ArrowRight":
-            xVelocity = 1;
-            yVelocity = 0;
+            if (xVelocity != -1) {
+                xVelocity = 1;
+                yVelocity = 0;
+            }
             break;
         case "ArrowDown":
-            xVelocity = 0;
-            yVelocity = 1;
+            if (yVelocity != -1) {
+                xVelocity = 0;
+                yVelocity = 1;
+            }
             break;
     }
 }
