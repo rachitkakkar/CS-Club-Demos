@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijkstra's Algorithm</title>
+</head>
+
+<style>
+  html {
+    line-height:1.5;
+    -webkit-text-size-adjust:100%;
+    -moz-tab-size:4;
+    -o-tab-size:4;
+    tab-size:4;
+    font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-feature-settings:normal;
+    font-variation-settings:normal;
+  }
+</style>
+
+<script>
+// Exercise 1: Implement our graph as an object
+const graph = {
+  a: { b: 5, c: 2 },
+  b: { a: 5, c: 7, d: 8 },
+  c: { a: 2, b: 7, d: 4, e: 8 },
+  d: { b: 8, c: 4, e: 6, f: 4 },
+  e: { c: 8, d: 6, f: 3 },
+  f: { e: 3, d: 4 },
+};
+const startNode = "a";
+  
+function dijkstra(graph, start) {
+  // Exercise 2: Create an object to store the shortest distances from the start node to all other nodes
+  const distances = {};
+
+  // Exercise 3: Create an object to keep track of whether each node has been visited
+  const visited = {};
+
+  // Exercise 4: Initialize distances and visited for all nodes in the graph (setting the distance to the start node at 0)
+  for (let node in graph) {
+    distances[node] = Infinity; // Set initial distance to infinity
+    visited[node] = false; // Mark the node as not visited
+  }
+  distances[start] = 0;
+
+  // Main loop to find the shortest paths
+  while (true) {
+    let closestNode = null;
+
+    // Excercise 5: Find the node with the smallest tentative distance that hasn't been visited
+    for (let node in graph) {
+      if (!visited[node] && (closestNode === null || distances[node] < distances[closestNode])) {
+        closestNode = node;
+      }
+    }
+
+    // Excercise 6: If no unvisited node was found, we are done
+    if (closestNode === null) {
+      break;
+    }
+
+    // Excercise 7: Update the distances to neighbors of the closestNode
+    for (let neighbor in graph[closestNode]) {
+      const distance = distances[closestNode] + graph[closestNode][neighbor];
+
+      // If a shorter distance is found, update the distances object
+      if (distance < distances[neighbor]) {
+        distances[neighbor] = distance;
+      }
+    }
+
+    // Excercise 8: Mark the closestNode as visited
+    visited[closestNode] = true;
+  }
+
+  // Return the shortest distances from the start node to all other nodes
+  return distances;
+}
+
+const result = dijkstra(graph, startNode);
+console.log(result);
+</script>
+
+</html>
